@@ -62,7 +62,7 @@ def move_hazard(hazard, speed: float, dt : float):
 
 def is_hazard_offscreen(hazard, screen_width: int):
     #if spike is off the left side of the screen, it will be despawned
-    despawn_x = -hazard.rect.width
+    despawn_x = -hazard.rect.width #offscreen to the left
     return hazard.rect.right < despawn_x
 
 def reset_hazard_position(hazard, x: int, y: int):
