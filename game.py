@@ -14,10 +14,12 @@ colliders = pygame.sprite.Group()
 
 ground = Ground(0, 450, 800, 50)
 player = Player(100, 300, 50, 50)
+spike = Spike(600, 400, 50, 50)
+pterodactyl = Pterodactyl(700, 200, 60, 40)
 
 
-all_sprites.add(ground, player)
-colliders.add(ground)
+all_sprites.add(ground, player, spike, pterodactyl)
+colliders.add(ground, spike, pterodactyl)
 
 running = True
 while running:
