@@ -23,6 +23,16 @@ class Player(pygame.sprite.Sprite):
         self.mask = pygame.mask.from_surface(self.image)
         self.type = 'player' # Type identifier for player objects
 
+        self.pos = pygame.math.Vector2(self.rect.topleft)
+        self.vel = pygame.math.Vector2(0, 0)
+        self.on_ground = False
+
+    def update(self, dt, colliders):
+        from physics import apply_gravity, move_and_collide
+
+        apply_gravity(self, dt)
+        move_and_collide(self, colliders, dt)
+
 class Spike (pygame.sprite.Sprite):
     def __init__(self, x, y, width, height):
         super().__init__()
@@ -46,3 +56,5 @@ class Pterodactyl(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(topleft = (x ,y)) # Pterodactyl's rectangle
         self.mask = pygame.mask.from_surface(self.image)
         self.type = 'pterodactyl' # Type identifier for pterodactyl objects
+
+
