@@ -76,3 +76,32 @@ class Player(pygame.sprite.Sprite):
 
 
 
+class score_display(pygame.sprite.Sprite):
+    def __init__(self, x, y, font_size=30):
+        super().__init__()
+        self.font = pygame.font.Font(None, font_size)
+        self.color = (255, 255, 255)  # White color for score text
+        self.pos = (x, y)
+        self.score = 0
+        self.image = self.font.render(f"Score: {self.score}", True, self.color)
+        self.rect = self.image.get_rect(topleft=self.pos)
+
+    def update(self, score):
+        if score != self.score:
+            self.score = score
+            self.image = self.font.render(f"Score: {self.score}", True, self.color)
+            self.rect = self.image.get_rect(topleft=self.pos)
+
+    def display_highscore(self, highscore):
+        self.image = self.font.render(f"Highscore: {highscore}", True, self.color)
+        self.rect = self.image.get_rect(topleft=self.pos)
+    
+
+class game_over_display(pygame.sprite.Sprite):
+    def __init__(self, x, y, font_size=50):
+        super().__init__()
+        self.font = pygame.font.Font(None, font_size)
+        self.color = (255, 0, 0)  # Red color for game over text
+        self.pos = (x, y)
+        self.image = self.font.render("GAME OVER", True, self.color)
+        self.rect = self.image.get_rect(center=self.pos)
