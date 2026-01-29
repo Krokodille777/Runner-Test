@@ -7,7 +7,7 @@ from sprites import Ground, Player, Spike, Pterodactyl
 
 # Gravity
 
-GRAVITY = 2200  # Pixels per second squared
+GRAVITY = 2000  # Pixels per second squared
 
 
 def apply_gravity(player, dt: float):
@@ -23,6 +23,8 @@ def move_and_collide(player, colliders, dt: float):
     player.rect.y = round(player.pos.y)
 
     for c in colliders:
+        if getattr(c, "type", None) != "ground":
+             continue
         if pygame.sprite.collide_mask(player, c):
             if player.vel.y > 0:  # Falling
                 player.rect.bottom = c.rect.top
@@ -68,4 +70,17 @@ def is_hazard_offscreen(hazard, screen_width: int):
 def reset_hazard_position(hazard, x: int, y: int):
     hazard.pos = pygame.math.Vector2(x, y)
     hazard.rect.topleft = (x, y)
+
+
+
+# Acceleration
+def accelerate_speed(speed: float, acceleration: float, dt: float, max_speed: float):
+    speed += acceleration * dt
+    if speed > max_speed:
+        speed = max_speed
+    if max_speed is not None and speed < max_speed:
+        speed = max_speed
+    return speed
+
+
 

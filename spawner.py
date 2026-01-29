@@ -1,6 +1,7 @@
 import random
 import pygame
 from sprites import Spike, Pterodactyl
+from physics import accelerate_speed
 
 class Spawner:
     def __init__(self, screen_width, ground_top_y, hazards_group, draw_group):
@@ -20,6 +21,9 @@ class Spawner:
         ]
 
         self.scroll_speed = 450
+        self.acceleration = 0.1  # Pixels per second squared
+        self.max_speed = 800  # Maximum world speed
+
 
     def _rightmost_obstacle_right(self):
         if len(self.hazards) == 0:
@@ -27,6 +31,8 @@ class Spawner:
         return max(s.rect.right for s in self.hazards.sprites())
 
     def update(self, dt):
+        scroll_speed = accelerate_speed(self.scroll_speed, self.acceleration, dt, self.max_speed)
+        self.scroll_speed = scroll_speed
         if len(self.hazards) == 0:
             self._spawn_one(self.screen_width + self.spawn_x_buffer)
             return
@@ -40,7 +46,7 @@ class Spawner:
     def _spawn_one(self, x_pos):
         kind = random.choices(
             population=["spike", "ptero"],
-            weights=[0.65, 0.35],
+            weights=[0.6, 0.3],
             k=1
         )[0]
 

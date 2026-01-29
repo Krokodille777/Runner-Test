@@ -1,10 +1,15 @@
 import pygame
 from sprites import Player, Ground, Spike, Pterodactyl, score_display, game_over_display
 from spawner import Spawner
+from physics import accelerate_speed
 
 pygame.init()
 screen = pygame.display.set_mode((800, 500))
 clock = pygame.time.Clock()
+
+world_speed = 200  # Initial world speed
+acceleration = 0.1  # Pixels per second squared
+max_speed = 500  # Maximum world speed
 
 ground = Ground(0, 450, 800, 50)
 player = Player(100, 300, 50, 50)
@@ -23,8 +28,8 @@ platforms = pygame.sprite.Group(ground)
 spawner = Spawner(
     screen_width=800,
     ground_top_y=450,
-    hazards_group=hazards,
-    draw_group=all_sprites
+     hazards_group=hazards, 
+     draw_group=all_sprites
 )
 
 
@@ -35,6 +40,13 @@ while running:
     dt = clock.tick(60) / 1000.0
     score += 1
     score_display_sprite.update(score)
+
+    world_speed = accelerate_speed(world_speed, acceleration, dt, max_speed)   
+
+    for h in hazards:
+        h.speed = world_speed
+
+    spawner.scroll_speed = world_speed
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
